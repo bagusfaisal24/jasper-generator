@@ -4,7 +4,7 @@ plugins {
 	id 'java'
 }
 
-group = 'jasper-generator'
+group = 'com.github.jasper-generator'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
@@ -12,6 +12,20 @@ repositories {
 	mavenCentral()
 	maven { url 'https://repo.spring.io/milestone' }
 	maven { url 'https://repo.spring.io/snapshot' }
+}
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+artifacts {
+	archives sourcesJar
+	archives javadocJar
 }
 
 dependencies {
@@ -22,4 +36,9 @@ dependencies {
 
 	compile('net.sf.jasperreports:jasperreports:6.7.0')
 	compile('org.xhtmlrenderer:flying-saucer-pdf:9.1.12')
+}
+
+wrapper {
+	gradleVersion = "5.1.1"
+	distributionType = Wrapper.DistributionType.ALL
 }
